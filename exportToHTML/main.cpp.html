@@ -1,0 +1,283 @@
+<html>
+<head>
+<title>main.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); font-style: italic; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(128,128,0); }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(0,0,128); font-weight: bold; }
+.s5 { color: rgb(0,0,255); }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+main.cpp</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">//Program to Store Book records using Hash Table</span><span class="s1"> 
+ 
+</span><span class="s0">/* 
+ * Created by Devashish Katoriya on 11-03-2017 
+ */</span><span class="s1"> 
+ 
+</span><span class="s2">#include</span><span class="s3"> &lt;iostream&gt;</span><span class="s1"> 
+</span><span class="s2">#include</span><span class="s3"> &lt;cstring&gt;</span><span class="s1"> 
+ 
+</span><span class="s4">using namespace </span><span class="s1">std; 
+ 
+</span><span class="s2">#define </span><span class="s1">MAX </span><span class="s5">10</span><span class="s1"> 
+ 
+</span><span class="s0">//Class Definitions</span><span class="s1"> 
+</span><span class="s4">class </span><span class="s1">Book                                                          </span><span class="s0">//Book Class</span><span class="s1"> 
+{ 
+</span><span class="s4">public </span><span class="s1">: 
+    </span><span class="s4">int </span><span class="s1">id; 
+    </span><span class="s4">char </span><span class="s1">title[MAX],author[MAX]; 
+}; 
+ 
+</span><span class="s4">class </span><span class="s1">HashTable                                                     </span><span class="s0">//Hash Table Class</span><span class="s1"> 
+{ 
+    Book ht[MAX]; 
+    </span><span class="s4">void </span><span class="s1">insert(Book); 
+    </span><span class="s4">void </span><span class="s1">insertQ(Book); 
+    </span><span class="s4">inline int </span><span class="s1">HashFunc(</span><span class="s4">int</span><span class="s1">); 
+</span><span class="s4">public </span><span class="s1">: 
+    HashTable() 
+    { 
+        </span><span class="s4">for</span><span class="s1">(</span><span class="s4">int </span><span class="s1">i=</span><span class="s5">0</span><span class="s1">;i&lt;MAX;i++) 
+        { 
+            ht[i].id = </span><span class="s5">0</span><span class="s1">; 
+            strcpy(ht[i].title,</span><span class="s3">&quot;&quot;</span><span class="s1">); 
+            strcpy(ht[i].author,</span><span class="s3">&quot;&quot;</span><span class="s1">); 
+        } 
+    } 
+    </span><span class="s4">bool </span><span class="s1">isFull() 
+    { 
+        </span><span class="s4">for</span><span class="s1">(</span><span class="s4">int </span><span class="s1">i=</span><span class="s5">0</span><span class="s1">;i&lt;MAX;i++) 
+        { 
+            </span><span class="s4">if</span><span class="s1">(ht[i].id==</span><span class="s5">0</span><span class="s1">) 
+            { 
+                </span><span class="s4">return false</span><span class="s1">; 
+            } 
+        } 
+        </span><span class="s4">return true</span><span class="s1">; 
+    } 
+    </span><span class="s4">void </span><span class="s1">clr() 
+    { 
+        </span><span class="s4">for</span><span class="s1">(</span><span class="s4">int </span><span class="s1">i=</span><span class="s5">0</span><span class="s1">;i&lt;MAX;i++) 
+        { 
+            ht[i].id = </span><span class="s5">0</span><span class="s1">; 
+            strcpy(ht[i].title,</span><span class="s3">&quot;&quot;</span><span class="s1">); 
+            strcpy(ht[i].author,</span><span class="s3">&quot;&quot;</span><span class="s1">); 
+        } 
+    } 
+    </span><span class="s4">void </span><span class="s1">construct(); 
+    </span><span class="s4">void </span><span class="s1">display(); 
+    </span><span class="s4">void </span><span class="s1">search(); 
+}; 
+ 
+</span><span class="s4">void </span><span class="s1">HashTable::construct()                                           </span><span class="s0">//Function for Insertion</span><span class="s1"> 
+{ 
+    </span><span class="s4">if</span><span class="s1">(isFull()) 
+    { 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Sorry, the Hash Table is Full.&quot;</span><span class="s1">; 
+        </span><span class="s4">return</span><span class="s1">; 
+    } 
+     
+    </span><span class="s4">int </span><span class="s1">ch = </span><span class="s5">0</span><span class="s1">; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n\n</span><span class="s3"> 1 for Linear Hashing.&quot;</span><span class="s1">; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3"> 2 for Quadratic Hashing.&quot;</span><span class="s1">; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Enter which Hashing Technique to use ? &quot;</span><span class="s1">; 
+    cin&gt;&gt;ch; 
+    </span><span class="s4">if</span><span class="s1">(ch==</span><span class="s5">1</span><span class="s1">) 
+    { 
+        Book B; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Enter Book Details :- &quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Enter ID   </span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">; 
+        cin&gt;&gt;B.id; 
+        cout&lt;&lt;</span><span class="s3">&quot;Enter Title </span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">; 
+        cin&gt;&gt;B.title; 
+        cout&lt;&lt;</span><span class="s3">&quot;Enter Author </span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">; 
+        cin&gt;&gt;B.author; 
+        insert(B); 
+    } 
+    </span><span class="s4">else if</span><span class="s1">(ch==</span><span class="s5">2</span><span class="s1">) 
+    { 
+        Book B; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Enter Book Details :- &quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Enter ID   </span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">; 
+        cin&gt;&gt;B.id; 
+        cout&lt;&lt;</span><span class="s3">&quot;Enter Title </span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">; 
+        cin&gt;&gt;B.title; 
+        cout&lt;&lt;</span><span class="s3">&quot;Enter Author </span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">; 
+        cin&gt;&gt;B.author; 
+        insertQ(B); 
+    } 
+    </span><span class="s4">else</span><span class="s1"> 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Invalid Option!&quot;</span><span class="s1">; 
+} 
+ 
+</span><span class="s4">void </span><span class="s1">HashTable::insert(Book B)                                         </span><span class="s0">//Insertion using Linear Probing</span><span class="s1"> 
+{ 
+    </span><span class="s4">int </span><span class="s1">pos; 
+    pos = HashFunc(B.id); 
+    </span><span class="s4">if</span><span class="s1">(ht[pos].id==</span><span class="s5">0</span><span class="s1">) 
+    { 
+        ht[pos] = B; 
+    } 
+    </span><span class="s4">else</span><span class="s1"> 
+    { 
+        </span><span class="s4">int </span><span class="s1">i=pos; 
+        </span><span class="s4">do</span><span class="s1"> 
+        { 
+            </span><span class="s4">if</span><span class="s1">(ht[i].id==</span><span class="s5">0</span><span class="s1">) 
+            { 
+                ht[i] = B; 
+                </span><span class="s4">break</span><span class="s1">; 
+            } 
+            i=(i+</span><span class="s5">1</span><span class="s1">)%MAX; 
+        }</span><span class="s4">while</span><span class="s1">(i!=pos); 
+    } 
+} 
+ 
+</span><span class="s4">void </span><span class="s1">HashTable::insertQ(Book B)                                         </span><span class="s0">//Insertion using Quadratic Probing</span><span class="s1"> 
+{ 
+    </span><span class="s4">int </span><span class="s1">pos; 
+    pos = HashFunc(B.id); 
+    </span><span class="s4">if</span><span class="s1">(ht[pos].id==</span><span class="s5">0</span><span class="s1">) 
+    { 
+        ht[pos] = B; 
+    } 
+    </span><span class="s4">else</span><span class="s1"> 
+    { 
+        </span><span class="s4">for</span><span class="s1">(</span><span class="s4">int </span><span class="s1">i=</span><span class="s5">1</span><span class="s1">; i&lt;(MAX-</span><span class="s5">1</span><span class="s1">)/</span><span class="s5">2</span><span class="s1">; i++) 
+        { 
+            </span><span class="s4">if</span><span class="s1">(ht[(pos+(i*i))%MAX].id==</span><span class="s5">0</span><span class="s1">) 
+            { 
+                ht[(pos+(i*i))%MAX] = B; 
+                </span><span class="s4">break</span><span class="s1">; 
+            } 
+        } 
+    } 
+} 
+ 
+</span><span class="s4">inline int </span><span class="s1">HashTable::HashFunc(</span><span class="s4">int </span><span class="s1">key)                                 </span><span class="s0">//Hash Function</span><span class="s1"> 
+{ 
+    </span><span class="s4">return </span><span class="s1">key % MAX; 
+} 
+ 
+</span><span class="s4">void </span><span class="s1">HashTable::display()                                               </span><span class="s0">//Display</span><span class="s1"> 
+{ 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n\t\t</span><span class="s3">Hash Table&quot;</span><span class="s1">; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">---------------------------------------------&quot;</span><span class="s1">; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Pos.</span><span class="s4">\t</span><span class="s3">ID</span><span class="s4">\t</span><span class="s3">Title</span><span class="s4">\t\t</span><span class="s3">Author&quot;</span><span class="s1">; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">---------------------------------------------&quot;</span><span class="s1">; 
+    </span><span class="s4">for</span><span class="s1">(</span><span class="s4">int </span><span class="s1">i=</span><span class="s5">0</span><span class="s1">;i&lt;MAX;i++) 
+    { 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">&quot;</span><span class="s1">&lt;&lt;i&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\t</span><span class="s3">&quot;</span><span class="s1">&lt;&lt;ht[i].id&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\t</span><span class="s3">&quot;</span><span class="s1">&lt;&lt;ht[i].title&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\t\t</span><span class="s3">&quot;</span><span class="s1">&lt;&lt;ht[i].author; 
+    } 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">---------------------------------------------&quot;</span><span class="s1">; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">MAX is &quot;</span><span class="s1">&lt;&lt;MAX; 
+} 
+ 
+</span><span class="s4">void </span><span class="s1">HashTable::search()                                                </span><span class="s0">//Search</span><span class="s1"> 
+{ 
+    </span><span class="s4">int </span><span class="s1">id,pos; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Enter ID to search : &quot;</span><span class="s1">; 
+    cin&gt;&gt;id; 
+    pos = HashFunc(id); 
+    </span><span class="s4">if</span><span class="s1">(ht[pos].id==id) 
+    { 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">ID   </span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">&lt;&lt;ht[pos].id; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Title</span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">&lt;&lt;ht[pos].title; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Author</span><span class="s4">\t</span><span class="s3">: &quot;</span><span class="s1">&lt;&lt;ht[pos].author; 
+        </span><span class="s4">return</span><span class="s1">; 
+    } 
+    </span><span class="s4">else</span><span class="s1"> 
+    { 
+        </span><span class="s4">int </span><span class="s1">i=pos; 
+        </span><span class="s4">do</span><span class="s1"> 
+        { 
+            </span><span class="s4">if</span><span class="s1">(ht[i].id==id) 
+            { 
+                cout &lt;&lt; </span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">ID   </span><span class="s4">\t</span><span class="s3">: &quot; </span><span class="s1">&lt;&lt; ht[i].id; 
+                cout &lt;&lt; </span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Title</span><span class="s4">\t</span><span class="s3">: &quot; </span><span class="s1">&lt;&lt; ht[i].title; 
+                cout &lt;&lt; </span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Author</span><span class="s4">\t</span><span class="s3">: &quot; </span><span class="s1">&lt;&lt; ht[i].author; 
+                </span><span class="s4">return</span><span class="s1">; 
+            } 
+            i=(i+</span><span class="s5">1</span><span class="s1">)%MAX; 
+        }</span><span class="s4">while</span><span class="s1">(i!=pos); 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Record NOT found!&quot;</span><span class="s1">; 
+    } 
+} 
+ 
+</span><span class="s0">//main()</span><span class="s1"> 
+</span><span class="s4">int </span><span class="s1">main() 
+{ 
+    HashTable obj; 
+    </span><span class="s4">char </span><span class="s1">choice; 
+    </span><span class="s4">int </span><span class="s1">ch; 
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Program to Store Book records using Hash Table.&quot;</span><span class="s1">; 
+    </span><span class="s4">do</span><span class="s1"> 
+    { 
+        ch = </span><span class="s5">0</span><span class="s1">; 
+        choice = </span><span class="s3">'n'</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n\n</span><span class="s3">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3"> 1 for Insertion&quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3"> 2 for Display Hash Table&quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3"> 3 for Searching&quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3"> 4 for IsFull&quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3"> -1 to Clear whole Tree&quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">  0 to Quit&quot;</span><span class="s1">; 
+        cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Enter your choice : &quot;</span><span class="s1">; 
+        cin&gt;&gt;ch; 
+        cout&lt;&lt;</span><span class="s3">&quot;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><span class="s4">\n</span><span class="s3">&quot;</span><span class="s1">; 
+        </span><span class="s4">switch</span><span class="s1">(ch) { 
+            </span><span class="s4">case </span><span class="s5">1 </span><span class="s1">: 
+                obj.construct(); 
+                </span><span class="s4">break</span><span class="s1">; 
+            </span><span class="s4">case </span><span class="s5">2 </span><span class="s1">: 
+                obj.display(); 
+                </span><span class="s4">break</span><span class="s1">; 
+            </span><span class="s4">case </span><span class="s5">3 </span><span class="s1">: 
+                obj.search(); 
+                </span><span class="s4">break</span><span class="s1">; 
+            </span><span class="s4">case </span><span class="s5">4 </span><span class="s1">: 
+                </span><span class="s4">if</span><span class="s1">(obj.isFull()) 
+                    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Yes, the Hash Table is Completely Full.&quot;</span><span class="s1">; 
+                </span><span class="s4">else</span><span class="s1"> 
+                    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">No, the Hash Table is Not full.&quot;</span><span class="s1">; 
+                </span><span class="s4">break</span><span class="s1">; 
+            </span><span class="s4">case </span><span class="s1">-</span><span class="s5">1 </span><span class="s1">: cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Are you sure you want to clear table (y/n) ? &quot;</span><span class="s1">; 
+                cin&gt;&gt;choice; 
+                </span><span class="s4">if</span><span class="s1">(choice==</span><span class="s3">'y'</span><span class="s1">||choice==</span><span class="s3">'Y'</span><span class="s1">) 
+                { 
+                    obj.clr(); 
+                    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Hash Table Cleared Successfully!&quot;</span><span class="s1">; 
+                } 
+                </span><span class="s4">else</span><span class="s1"> 
+                    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Cancelled!&quot;</span><span class="s1">; 
+            </span><span class="s4">case </span><span class="s5">0 </span><span class="s1">: </span><span class="s4">break</span><span class="s1">; 
+            </span><span class="s4">default </span><span class="s1">: cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Invalid Option!&quot;</span><span class="s1">; 
+        } 
+         
+        </span><span class="s0">/* 
+        if(ch!=0) 
+        { 
+            cout&lt;&lt;&quot;\n\n\n\n\n\n\nPress any key to continue...&quot;; 
+            cin.ignore(); 
+            cin.get(); 
+        } 
+        */</span><span class="s1"> 
+    }</span><span class="s4">while</span><span class="s1">(ch!=</span><span class="s5">0</span><span class="s1">); 
+     
+    cout&lt;&lt;</span><span class="s3">&quot;</span><span class="s4">\n</span><span class="s3">Thank you for using this program :) </span><span class="s4">\n\n</span><span class="s3">&quot;</span><span class="s1">; 
+    </span><span class="s4">return </span><span class="s5">0</span><span class="s1">; 
+}</span></pre>
+</body>
+</html>
